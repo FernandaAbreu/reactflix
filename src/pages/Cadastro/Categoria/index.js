@@ -31,18 +31,19 @@ function CadastroCategoria() {
   // ============
 
   useEffect(() => {
-    if (window.location.href.includes('localhost')) {
-      const URL = 'https://webfeflix.herokuapp.com/categorias';
-      fetch(URL)
-        .then(async (respostaDoServer) => {
-          if (respostaDoServer.ok) {
-            const resposta = await respostaDoServer.json();
-            setCategorias(resposta);
-            return;
-          }
-          throw new Error('Não foi possível pegar os dados');
-        });
-    }
+    const URL = window.location.href.includes('localhost')
+      ? 'http://localhost:8080/categorias'
+      : 'https://webfeflix.herokuapp.com/categorias';
+
+    fetch(URL)
+      .then(async (respostaDoServer) => {
+        if (respostaDoServer.ok) {
+          const resposta = await respostaDoServer.json();
+          setCategorias(resposta);
+          return;
+        }
+        throw new Error('Não foi possível pegar os dados');
+      });
   }, []);
 
   return (
@@ -79,7 +80,6 @@ function CadastroCategoria() {
           value={values.descricao}
           onChange={handleChange}
         />
-       
 
         <FormField
           label="Cor"
